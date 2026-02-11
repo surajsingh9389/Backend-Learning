@@ -1,3 +1,7 @@
+// Variables: var, let, const & scope
+
+
+
 // if(true){
 //     var a = 12;
 // }

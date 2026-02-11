@@ -1,3 +1,5 @@
+// JavaScript execution context & call stack
+
 // console.log(a);
 // var a = 10;
 

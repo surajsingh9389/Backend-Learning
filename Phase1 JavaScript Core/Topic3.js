@@ -1,3 +1,5 @@
+// Data types (primitive vs reference)
+
 // let a = 10;
 // let b = a;
 
