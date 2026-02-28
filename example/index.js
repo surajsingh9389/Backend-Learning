@@ -1,12 +1,18 @@
 import express from "express";
 import authRoutes from "./routes/authRoutes.js";
-
-import 'dotenv/config';
 import errorHandler from "./middlewares/errorHandler.js";
 import { protect } from "./middlewares/authMiddleware.js";
+import connectDB from "./config/dg.js";
+
+import 'dotenv/config';
+import { getProfile } from "./controllers/profileControllers.js";
+
+
 
 const app = express();
 app.use(express.json());
+
+connectDB
 
 app.use("/auth", authRoutes);
 
@@ -15,9 +21,7 @@ app.get("/", (req, res)=>{
 })
 
 // Example protected route
-app.get("/profile", protect, (req, res) => {
-  res.json({ message: "Protected route" });
-});
+app.get("/profile", protect, getProfile);
 
 app.use(errorHandler);
 

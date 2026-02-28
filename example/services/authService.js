@@ -1,21 +1,18 @@
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { User } from "../models/User";
 
-const USERS_FILE = "./users.json";
+// function readUsers() {
+//   return JSON.parse(fs.readFileSync(USERS_FILE));
+// }
 
-function readUsers() {
-  return JSON.parse(fs.readFileSync(USERS_FILE));
-}
-
-function writeUsers(users) {
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-}
+// function writeUsers(users) {
+//   fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+// }
 
 export async function registerUser({ email, password }) {
-  const users = readUsers();
-
-  const exists = users.find((u) => u.email === email);
+  const exists = await User.findOne({email});
   if (exists) {
     const err = new Error("User already exists");
     err.statusCode = 409;
@@ -24,21 +21,17 @@ export async function registerUser({ email, password }) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = {
-    id: Date.now(),
+  const user = await User.create({
     email,
     password: hashedPassword,
-  };
+  });
 
-  users.push(user);
-  writeUsers(users);
-
-  return { id: user.id, emai: user.email };
+  return { id: user._id, emai: user.email };
 }
 
 export async function loginUser({ email, password }) {
-  const users = readUsers();
-  const user = users.find((u) => u.email === email);
+  
+  const user = await User.findOne({ email });
 
   if (!user) {
     const err = new Error("Invalid credentials");
@@ -54,7 +47,7 @@ export async function loginUser({ email, password }) {
     throw err;
   }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
 
