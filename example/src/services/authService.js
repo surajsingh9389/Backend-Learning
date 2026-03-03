@@ -1,7 +1,7 @@
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { User } from "../models/User";
+import { User } from "../models/User.js";
 
 // function readUsers() {
 //   return JSON.parse(fs.readFileSync(USERS_FILE));
