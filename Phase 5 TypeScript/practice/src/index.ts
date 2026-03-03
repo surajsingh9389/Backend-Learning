@@ -1,25 +1,21 @@
-// function print(): void{
-//    const message: string = "TypesScript backend runnig";
-//    console.log(message);
-// }
+import express from "express";
+import type { Request, Response } from "express";
+import authRoutes from "./routes/authRoutes.js"
 
-// print();
+const app = express();
 
-interface RegisterDTO{
-    email: string;
-    password: string;
-}
+app.use(express.json());
+app.use("/auth", authRoutes);
 
-const data: RegisterDTO = {
-    email: "sk123.com",
-    password: "12345"
-}
+app.get("/", (req: Request, res: Response) => {
+    res.json({ status: "ok" });
+})
 
-function register(data: RegisterDTO): void{
-    console.log(data.email);
-}
+app.listen(3000, ()=> {
+    console.log("Server running on port 3000");
 
-register(data);
+})
+
 
 
 
