@@ -11,8 +11,8 @@
 // 3. the src store the expres which are in .ts. 
 
 
-// 1. instead of blindly guesing the property Response suggest the proper property which used in response help to send a cleaner response.
+// 1. The Response type provides proper typing and autocomplete for response methods (res.json, res.status, res.send), preventing misuse and improving correctness.
 
-// 2. because controller not returning anything jus sending a response.
+// 2. Controllers don’t return values; they send HTTP responses. Therefore, their return type is void to reflect that responsibility.
 
-// 3. In controller because we do handle Request and Response there if we do not correctly handle Request and Response typerscript show redline means i don't what is this.
+// 3. TypeScript complains more in controllers because controllers directly interact with external, untyped input (req.body, req.params, req.query), while services usually work with well-defined internal data.
