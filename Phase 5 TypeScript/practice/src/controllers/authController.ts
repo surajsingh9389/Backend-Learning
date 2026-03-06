@@ -1,10 +1,28 @@
 import type { Request, Response } from "express";
 import type { IdParam, LoginDTO } from "../dtos/dto.js";
 import type { RegisterDTO } from "../validators/register.validators.js";
+import { generateToken } from "../utils/generateToken.js";
 
-export function login(req: Request<{}, {}, LoginDTO>, res: Response): void {
+import bcrypt from "bcrypt";
+
+export async function login(req: Request<{}, {}, LoginDTO>, res: Response){
     const { email, password }= req.body;
-    res.json({ email });
+    
+    const user = findUserByEmail(email);
+
+    if(!user){
+      return res.status(401).json({message: "Invalid credentials"});
+    }
+
+    const valid = await bcrypt.compare(password, user.password);
+
+    if(!valid){
+        return res.status(401).json({ message: "Invalid credentials "});
+    }
+
+    const token = generateToken(user.id);
+
+    res.json({ token });
 }
 
 export function toggle(
