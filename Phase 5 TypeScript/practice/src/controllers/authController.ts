@@ -4,11 +4,12 @@ import type { RegisterDTO } from "../validators/register.validators.js";
 import { generateToken } from "../utils/generateToken.js";
 
 import bcrypt from "bcrypt";
+import { findUserByEmail } from "../services/authServices.js";
 
 export async function login(req: Request<{}, {}, LoginDTO>, res: Response){
     const { email, password }= req.body;
     
-    const user = findUserByEmail(email);
+    const user = await findUserByEmail(email);
 
     if(!user){
       return res.status(401).json({message: "Invalid credentials"});
