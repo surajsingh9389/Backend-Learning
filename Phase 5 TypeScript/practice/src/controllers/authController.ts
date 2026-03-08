@@ -31,6 +31,7 @@ export function toggle(
     res: Response
 ):  void {
     const id = Number(req.params.id);
+    res.status(201).json({message: "success"})
 }
 
 
