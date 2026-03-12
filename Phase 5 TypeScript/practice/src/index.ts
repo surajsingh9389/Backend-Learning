@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import authRoutes from "./routes/authRoutes.js"
 import "dotenv/config";
 import { connectDB } from "./config/database.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 
 
@@ -16,6 +17,8 @@ connectDB();
 app.get("/", (req: Request, res: Response) => {
     res.json({ status: "ok" });
 })
+
+app.use(errorHandler)
 
 app.listen(3000, ()=> {
     console.log("Server running on port 3000");
